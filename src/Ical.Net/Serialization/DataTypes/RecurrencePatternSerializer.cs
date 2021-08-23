@@ -90,6 +90,18 @@ namespace Ical.Net.Serialization.DataTypes
                 return;
             }
 
+            //This following fix comes from an un-approved PR:
+            //https://github.com/rianjs/ical.net/pull/471/files#submit-review
+            //Issue is also logged here:
+            //https://github.com/xamarin/xamarin-macios/issues/12508
+
+            // For some reason GetField("MinValue") sometimes returns 'null' when the obj is an int
+            // Casting the object to an int and directly checking for MinValue works though.
+            if (obj1 is int c && c == int.MinValue)
+            {
+                return;
+            }
+
             throw new ArgumentException("Both " + name1 + " and " + name2 + " cannot be supplied together; they are mutually exclusive.");
         }
 
